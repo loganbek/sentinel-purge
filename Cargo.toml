@@ -1,0 +1,54 @@
+[package]
+name = "sentinel-purge"
+version = "0.1.0"
+edition = "2021"
+authors = ["SentinelPurge Contributors"]
+description = "Advanced, cross-platform APT removal tool with stealth capabilities"
+license = "MIT"
+repository = "https://github.com/loganbek/sentinel-purge"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+rand = "0.8"
+log = "0.4"
+env_logger = "0.10"
+thiserror = "1.0"
+anyhow = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4.0", features = ["derive"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+secrecy = "0.8"
+ring = "0.17"
+dirs = "5.0"
+
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["winnt", "processthreadsapi", "handleapi", "psapi", "tlhelp32", "winsvc"] }
+windows = { version = "0.52", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_System_ProcessStatus"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+nix = "0.27"
+
+[dev-dependencies]
+tempfile = "3.0"
+criterion = "0.5"
+
+[[bin]]
+name = "sentinel-purge"
+path = "src/main.rs"
+
+[lib]
+name = "sentinel_purge"
+path = "src/lib.rs"
+
+
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"
