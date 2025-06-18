@@ -10,10 +10,10 @@ reviews:
   request_changes_workflow: true
   auto_review: true
   draft_review: false
-  
+
   # High-level review for security-critical code
   review_level: comprehensive
-  
+
   # Focus areas for this security tool
   focus:
     - security
@@ -22,7 +22,7 @@ reviews:
     - memory_safety
     - error_handling
     - logging_privacy
-    
+
 # File patterns to review with extra scrutiny
 high_priority_files:
   - "src/**/*.rs"
@@ -47,22 +47,22 @@ rules:
   - no_unsafe_without_justification
   - prefer_safe_alternatives
   - check_buffer_bounds
-  
+
   # Error handling (important for reliability)
   - explicit_error_handling
   - no_unwrap_in_production
   - proper_result_propagation
-  
+
   # Logging and privacy
   - no_sensitive_data_logging
   - sanitize_user_input
   - avoid_info_disclosure
-  
+
   # Performance and resource management
   - check_memory_leaks
   - avoid_blocking_operations
   - efficient_algorithms
-  
+
   # Cross-platform considerations
   - platform_specific_code_review
   - path_handling_security
@@ -80,7 +80,7 @@ prompts:
     - Cross-platform security considerations
     - Proper sanitization of user input and system data
     - Secure handling of credentials and sensitive information
-    
+
   performance_review: |
     This tool may run for extended periods (days/weeks) in stealth mode.
     Consider:
@@ -96,7 +96,7 @@ comments:
   suggest_security_improvements: true
   highlight_potential_vulnerabilities: true
   recommend_rust_security_patterns: true
-  
+
   # Code quality
   suggest_performance_optimizations: true
   recommend_error_handling: true
@@ -108,21 +108,21 @@ integrations:
     auto_merge: false  # Never auto-merge security tool code
     require_review_approval: true
     block_on_security_issues: true
-    
+
 # Path-specific configurations
 path_configs:
   "src/scanner/":
     extra_security_review: true
     require_manual_review: true
-    
+
   "src/crypto/":
     cryptography_review: true
     require_security_expert: true
-    
+
   "src/network/":
     network_security_review: true
     check_for_injection_vulnerabilities: true
-    
+
   "tests/":
     focus_on_edge_cases: true
     security_test_coverage: true
