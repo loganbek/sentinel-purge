@@ -1,0 +1,259 @@
+name: Issue Management
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  auto-assign-labels:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: Auto-assign security label for security issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = issue.body ? issue.body.toLowerCase() : '';
+            
+            const securityKeywords = ['security', 'vulnerability', 'exploit', 'cve', 'malware', 'threat'];
+            const performanceKeywords = ['performance', 'memory', 'cpu', 'slow', 'optimization'];
+            const platformKeywords = ['windows', 'linux', 'macos', 'cross-platform'];
+            
+            let labelsToAdd = [];
+            
+            // Check for security-related content
+            if (securityKeywords.some(keyword => title.includes(keyword) || body.includes(keyword))) {
+              labelsToAdd.push('security');
+            }
+            
+            // Check for performance-related content
+            if (performanceKeywords.some(keyword => title.includes(keyword) || body.includes(keyword))) {
+              labelsToAdd.push('performance');
+            }
+            
+            // Check for platform-specific content
+            if (title.includes('windows') || body.includes('windows')) {
+              labelsToAdd.push('platform:windows');
+            }
+            if (title.includes('linux') || body.includes('linux')) {
+              labelsToAdd.push('platform:linux');
+            }
+            if (title.includes('macos') || body.includes('macos')) {
+              labelsToAdd.push('platform:macos');
+            }
+            
+            // Add complexity estimation based on template
+            if (body.includes('estimated complexity')) {
+              if (body.includes('very high') || body.includes('high complexity')) {
+                labelsToAdd.push('complexity:high');
+              } else if (body.includes('medium complexity')) {
+                labelsToAdd.push('complexity:medium');
+              } else if (body.includes('low complexity')) {
+                labelsToAdd.push('complexity:low');
+              }
+            }
+            
+            // Apply labels if any were identified
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labelsToAdd
+              });
+            }
+
+  validate-template-completion:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: Check template completion
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            
+            // Check for common template incomplete indicators
+            const incompleteIndicators = [
+              '<!-- ',
+              'TODO',
+              'FIXME',
+              '[Component/Feature]',
+              '[Windows/Linux/macOS]',
+              'describe which',
+              'add any other'
+            ];
+            
+            const hasIncompleteContent = incompleteIndicators.some(indicator => 
+              body.includes(indicator)
+            );
+            
+            // Check for required sections that appear empty
+            const requiredSections = [
+              'overview',
+              'requirements',
+              'acceptance criteria'
+            ];
+            
+            let missingSections = [];
+            requiredSections.forEach(section => {
+              const sectionRegex = new RegExp(`## .*${section}[\\s\\S]*?(?=##|$)`, 'i');
+              const sectionMatch = body.match(sectionRegex);
+              if (!sectionMatch || sectionMatch[0].trim().length < 100) {
+                missingSections.push(section);
+              }
+            });
+            
+            if (hasIncompleteContent || missingSections.length > 0) {
+              let comment = '## 📋 Template Completion Reminder\n\n';
+              comment += 'Thank you for creating this issue! It looks like some template sections may need more detail:\n\n';
+              
+              if (hasIncompleteContent) {
+                comment += '- ⚠️ Template placeholders or comments may still be present\n';
+              }
+              
+              if (missingSections.length > 0) {
+                comment += `- ⚠️ The following sections appear incomplete: ${missingSections.join(', ')}\n`;
+              }
+              
+              comment += '\nPlease review and complete the template sections to help us understand and prioritize this issue effectively.\n\n';
+              comment += '📝 **Tip**: Well-completed issues get faster attention and more accurate implementation!';
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: comment
+              });
+              
+              // Add needs-more-info label
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['needs-more-info']
+              });
+            }
+
+  security-issue-notification:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'security') || contains(github.event.issue.title, 'security') || contains(github.event.issue.title, 'vulnerability')
+    steps:
+      - name: Add security team notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `## 🔒 Security Issue Detected
+            
+            This issue has been identified as security-related and has been flagged for the security team.
+            
+            **Important Reminders:**
+            - 🚨 If this is a vulnerability report, consider using [GitHub Security Advisories](https://github.com/${context.repo.owner}/${context.repo.repo}/security/advisories/new) instead
+            - 🔐 Avoid including sensitive details in public issues
+            - 📧 For urgent security matters, contact the security team directly
+            - ⚡ Security issues receive high priority review
+            
+            The security team will review this issue and provide guidance on appropriate handling procedures.`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: comment
+            });
+            
+            // Add high-priority label for security issues
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: ['high-priority', 'security-review-needed']
+            });
+
+  dependency-tracking:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: Extract and link dependencies
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            
+            // Extract issue references (e.g., #123, #456)
+            const issueReferences = body.match(/#\d+/g) || [];
+            
+            if (issueReferences.length > 0) {
+              const uniqueReferences = [...new Set(issueReferences)];
+              
+              let comment = `## 🔗 Dependency Tracking\n\n`;
+              comment += `This issue references the following related issues:\n\n`;
+              
+              uniqueReferences.forEach(ref => {
+                comment += `- ${ref}\n`;
+              });
+              
+              comment += `\n📝 **Note**: These dependencies will be tracked for proper sequencing and coordination.`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: comment
+              });
+              
+              // Add dependencies label
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['has-dependencies']
+              });
+            }
+
+  acceptance-criteria-check:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: Validate acceptance criteria format
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            
+            // Check for acceptance criteria section
+            const acceptanceCriteriaRegex = /## .*acceptance criteria[\\s\\S]*?(?=##|$)/i;
+            const acceptanceSection = body.match(acceptanceCriteriaRegex);
+            
+            if (acceptanceSection) {
+              // Count checkboxes in acceptance criteria
+              const checkboxPattern = /- \[ \]/g;
+              const checkboxes = (acceptanceSection[0].match(checkboxPattern) || []).length;
+              
+              if (checkboxes >= 5) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `## ✅ Well-Structured Issue\n\nGreat job! This issue includes ${checkboxes} acceptance criteria checkboxes, which will help track implementation progress.\n\n💡 **Tip**: You can check off these boxes as work progresses to keep everyone updated on status.`
+                });
+                
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: ['well-defined']
+                });
+              }
+            }

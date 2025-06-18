@@ -116,6 +116,24 @@ Auto Threat Reporting: Submits unknown indicators to hybrid analysis backends.
 
 SIEM Export: Splunk/ELK/Sentinel one-click integration.
 
-## Development Organization
+## 🚀 Contributing & Issue Management
 
-For detailed development specifications and implementation guides, see the [issues directory](./issues/README.md) which contains structured issue templates for each major feature component.
+### Issue Templates
+This project uses structured GitHub issue templates to ensure comprehensive requirements capture and consistent development tracking. When creating new issues, please use the appropriate template:
+
+- **🏗️ Cross-Platform Agent**: Core agent infrastructure, module system, IPC
+- **🔍 Detection Engine**: Threat detection, ML models, signature-based scanning  
+- **🔒 Security Implementation**: Cryptography, hardening, compliance features
+- **🖥️ Platform-Specific**: Windows/Linux/macOS specific implementations
+- **🥷 Covert Operations**: Stealth features, anti-detection, operational security
+- **✨ Feature Request**: General feature requests and enhancements
+- **🐛 Bug Report**: Software defects and unexpected behavior
+
+### Quick Start for Contributors
+1. **Browse Issues**: Check existing [issues](https://github.com/sentinel-purge/sentinel-purge/issues) and [project board](https://github.com/sentinel-purge/sentinel-purge/projects)
+2. **Select Template**: Use appropriate issue template for new requirements
+3. **Follow Guidelines**: See [`.github/ISSUE_TEMPLATE/README.md`](./.github/ISSUE_TEMPLATE/README.md) for detailed guidance
+4. **Security First**: All contributions must follow security-first development principles
+
+### Development Roadmap
+For detailed development specifications and implementation guides, see the [issues directory](./issues/README.md) which contains the original development requirements that informed these GitHub issue templates.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability Report
+    url: https://github.com/sentinel-purge/sentinel-purge/security/advisories/new
+    about: Report security vulnerabilities through GitHub's security advisory system
+  - name: General Discussion
+    url: https://github.com/sentinel-purge/sentinel-purge/discussions
+    about: Ask questions and discuss features with the community
