@@ -1,0 +1,140 @@
+# Copilot ignore patterns for SentinelPurge
+# Exclude sensitive files and directories from Copilot suggestions
+
+# Security-sensitive configuration files
+**/secrets.yaml
+**/secrets.yml
+**/config/secrets/
+**/.env
+**/.env.local
+**/.env.production
+**/credentials/
+**/keys/
+**/certs/
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
+
+# Threat intelligence and signature files
+# (May contain sensitive indicators or proprietary detection rules)
+**/signatures/
+**/indicators/
+**/threat-intel/
+**/yara-rules/
+**/sigma-rules/
+**/*.yar
+**/*.yara
+**/*.sigma
+
+# Forensic data and evidence
+**/evidence/
+**/forensic-data/
+**/memory-dumps/
+**/process-dumps/
+**/*.vmem
+**/*.dmp
+**/*.raw
+
+# Log files that may contain sensitive information
+**/logs/
+**/*.log
+**/audit/
+**/traces/
+
+# Database files that may contain sensitive data
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/database/
+
+# Backup and snapshot files
+**/backups/
+**/snapshots/
+**/*.bak
+**/*.backup
+
+# Build artifacts and dependencies
+target/
+**/target/
+build/
+dist/
+node_modules/
+**/node_modules/
+
+# IDE and editor files
+.vscode/settings.json
+.idea/
+**/.vscode/launch.json
+**/.vscode/tasks.json
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Git files
+.git/
+**/.git/
+
+# Test data that might contain sensitive samples
+**/test-data/malware/
+**/test-samples/
+**/malware-samples/
+**/*.exe.sample
+**/*.dll.sample
+
+# Configuration files with potentially sensitive settings
+**/production-config/
+**/prod-config/
+**/*production*.yaml
+**/*production*.yml
+**/*production*.toml
+**/*prod*.config
+
+# Documentation that might reveal security details
+**/internal-docs/
+**/security-notes/
+**/vulnerability-reports/
+
+# Temporary files
+tmp/
+temp/
+**/tmp/
+**/temp/
+*.tmp
+*.temp
+
+# Package manager files that might contain sensitive info
+.npmrc
+.yarnrc
+pip.conf
+**/pip.conf
+
+# Docker files that might contain secrets
+**/docker-compose.override.yml
+**/docker-compose.prod.yml
+Dockerfile.prod
+
+# Kubernetes and deployment files with secrets
+**/k8s-secrets/
+**/kubernetes/secrets/
+**/*-secret.yaml
+**/*-secret.yml
+
+# License and legal files (avoid suggesting changes)
+LICENSE
+COPYING
+**license**
+**LICENSE**
+
+# Version control and CI files
+.gitignore
+.gitattributes
+**/.github/workflows/
+**/ci/
+**/.gitlab-ci.yml
+**/Jenkinsfile
