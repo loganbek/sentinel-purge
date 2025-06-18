@@ -119,5 +119,3 @@ SIEM Export: Splunk/ELK/Sentinel one-click integration.
 ## Development Organization
 
 For detailed development specifications and implementation guides, see the [issues directory](./issues/README.md) which contains structured issue templates for each major feature component.
-
-Would you like help prototyping a basic version of this in a specific language (e.g., a PoC in Python or Rust)?
