@@ -1,0 +1,138 @@
+{
+  "// SentinelPurge VS Code Settings": "Configuration for GitHub Copilot and Rust development",
+  
+  "// GitHub Copilot Configuration": {
+    "github.copilot.enable": true,
+    "github.copilot.advanced": {
+      "// Security-focused suggestions": true,
+      "inlineSuggestEnable": true,
+      "listCount": 3,
+      "temperature": 0.2
+    }
+  },
+  
+  "// Rust Language Configuration": {
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "rust-analyzer.checkOnSave.extraArgs": [
+      "--",
+      "-W",
+      "clippy::all",
+      "-W",
+      "clippy::pedantic",
+      "-W",
+      "clippy::security"
+    ],
+    "rust-analyzer.cargo.features": "all",
+    "rust-analyzer.procMacro.enable": true,
+    "rust-analyzer.imports.granularity.group": "module",
+    "rust-analyzer.completion.addCallParenthesis": false
+  },
+  
+  "// Editor Settings for Security Code": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    },
+    "editor.rulers": [100],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.trimAutoWhitespace": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true
+  },
+  
+  "// Security and Privacy Settings": {
+    "telemetry.telemetryLevel": "off",
+    "redhat.telemetry.enabled": false,
+    "security.workspace.trust.untrustedFiles": "prompt"
+  },
+  
+  "// File Associations": {
+    "files.associations": {
+      "*.yara": "yara",
+      "*.yar": "yara",
+      "*.sigma": "yaml",
+      "Cargo.lock": "toml"
+    }
+  },
+  
+  "// Search and Git Settings": {
+    "search.exclude": {
+      "**/target": true,
+      "**/Cargo.lock": true,
+      "**/node_modules": true,
+      "**/.git": true,
+      "**/logs": true,
+      "**/evidence": true,
+      "**/signatures": true
+    },
+    "files.watcherExclude": {
+      "**/target/**": true,
+      "**/logs/**": true,
+      "**/evidence/**": true
+    }
+  },
+  
+  "// Extension-Specific Settings": {
+    "cSpell.words": [
+      "sentinelpurge",
+      "yara",
+      "sigma",
+      "misp",
+      "virustotal",
+      "sysinternals",
+      "lsass",
+      "systemd",
+      "crontabs",
+      "launchagents",
+      "launchdaemons",
+      "rootkits",
+      "volatility",
+      "sinkhole",
+      "rustls"
+    ],
+    "todo-tree.general.tags": [
+      "TODO",
+      "FIXME", 
+      "SECURITY",
+      "AUDIT",
+      "UNSAFE",
+      "PERF"
+    ],
+    "todo-tree.highlights.customHighlight": {
+      "SECURITY": {
+        "icon": "shield",
+        "foreground": "#ff0000",
+        "background": "#ffcccc",
+        "iconColour": "#ff0000"
+      },
+      "AUDIT": {
+        "icon": "eye",
+        "foreground": "#ff8800",
+        "background": "#fff3cd",
+        "iconColour": "#ff8800"
+      },
+      "UNSAFE": {
+        "icon": "alert",
+        "foreground": "#ff0000",
+        "background": "#ffcccc",
+        "iconColour": "#ff0000"
+      }
+    }
+  },
+  
+  "// Recommended Extensions": {
+    "extensions.recommendations": [
+      "rust-lang.rust-analyzer",
+      "github.copilot",
+      "github.copilot-chat",
+      "vadimcn.vscode-lldb",
+      "serayuzgur.crates",
+      "tamasfe.even-better-toml",
+      "ms-vscode.vscode-json",
+      "gruntfuggly.todo-tree",
+      "streetsidesoftware.code-spell-checker"
+    ]
+  }
+}

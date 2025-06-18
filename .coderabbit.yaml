@@ -1,0 +1,128 @@
+# CodeRabbit configuration for sentinel-purge
+# Advanced APT (Advanced Persistent Threat) Removal Tool
+
+# Language settings
+language: rust
+
+# Review settings
+reviews:
+  # Security-focused review for APT removal tool
+  request_changes_workflow: true
+  auto_review: true
+  draft_review: false
+  
+  # High-level review for security-critical code
+  review_level: comprehensive
+  
+  # Focus areas for this security tool
+  focus:
+    - security
+    - performance
+    - cross_platform_compatibility
+    - memory_safety
+    - error_handling
+    - logging_privacy
+    
+# File patterns to review with extra scrutiny
+high_priority_files:
+  - "src/**/*.rs"
+  - "Cargo.toml"
+  - "Cargo.lock"
+  - "**/*security*"
+  - "**/*crypto*"
+  - "**/*auth*"
+  - "**/scanner*"
+  - "**/detection*"
+
+# Files to ignore or review with lower priority
+ignore_files:
+  - "target/**"
+  - "*.md"
+  - ".git/**"
+  - "docs/**/*.md"
+
+# Security-specific rules for APT removal tool
+rules:
+  # Memory safety (critical for security tools)
+  - no_unsafe_without_justification
+  - prefer_safe_alternatives
+  - check_buffer_bounds
+  
+  # Error handling (important for reliability)
+  - explicit_error_handling
+  - no_unwrap_in_production
+  - proper_result_propagation
+  
+  # Logging and privacy
+  - no_sensitive_data_logging
+  - sanitize_user_input
+  - avoid_info_disclosure
+  
+  # Performance and resource management
+  - check_memory_leaks
+  - avoid_blocking_operations
+  - efficient_algorithms
+  
+  # Cross-platform considerations
+  - platform_specific_code_review
+  - path_handling_security
+  - privilege_escalation_checks
+
+# Custom prompts for security context
+prompts:
+  security_review: |
+    This is a security tool designed to detect and remove Advanced Persistent Threats (APTs).
+    Please pay special attention to:
+    - Memory safety and buffer overflow prevention
+    - Privilege escalation vulnerabilities
+    - Information disclosure risks
+    - Timing attacks and side-channel vulnerabilities
+    - Cross-platform security considerations
+    - Proper sanitization of user input and system data
+    - Secure handling of credentials and sensitive information
+    
+  performance_review: |
+    This tool may run for extended periods (days/weeks) in stealth mode.
+    Consider:
+    - Memory usage optimization
+    - CPU efficiency for background operations
+    - I/O optimization for file system scanning
+    - Network efficiency for threat intelligence
+    - Battery usage on laptops/mobile devices
+
+# Comments and suggestions
+comments:
+  # Encourage security best practices
+  suggest_security_improvements: true
+  highlight_potential_vulnerabilities: true
+  recommend_rust_security_patterns: true
+  
+  # Code quality
+  suggest_performance_optimizations: true
+  recommend_error_handling: true
+  suggest_documentation: true
+
+# Integration settings
+integrations:
+  github:
+    auto_merge: false  # Never auto-merge security tool code
+    require_review_approval: true
+    block_on_security_issues: true
+    
+# Path-specific configurations
+path_configs:
+  "src/scanner/":
+    extra_security_review: true
+    require_manual_review: true
+    
+  "src/crypto/":
+    cryptography_review: true
+    require_security_expert: true
+    
+  "src/network/":
+    network_security_review: true
+    check_for_injection_vulnerabilities: true
+    
+  "tests/":
+    focus_on_edge_cases: true
+    security_test_coverage: true

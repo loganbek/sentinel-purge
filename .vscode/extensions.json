@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "rust-lang.rust-analyzer",
+    "github.copilot",
+    "github.copilot-chat",
+    "vadimcn.vscode-lldb",
+    "serayuzgur.crates",
+    "tamasfe.even-better-toml",
+    "ms-vscode.vscode-json",
+    "gruntfuggly.todo-tree",
+    "streetsidesoftware.code-spell-checker",
+    "ms-vscode.hexeditor",
+    "ms-vscode.powershell",
+    "ms-python.python",
+    "golang.go"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.cpptools"
+  ]
+}
