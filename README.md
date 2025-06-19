@@ -116,6 +116,81 @@ Auto Threat Reporting: Submits unknown indicators to hybrid analysis backends.
 
 SIEM Export: Splunk/ELK/Sentinel one-click integration.
 
+## 📦 Installation
+
+### Prerequisites
+- **Rust 1.56+**: SentinelPurge is built with Rust 2021 edition. Install from [rustup.rs](https://rustup.rs/)
+- **Git**: For cloning the repository
+
+### Building from Source
+```bash
+# Clone the repository
+git clone https://github.com/loganbek/sentinel-purge.git
+cd sentinel-purge
+
+# Build the project (release build recommended)
+cargo build --release
+
+# Alternative: Build for development (faster compilation, larger binary)
+cargo build
+
+# Run tests to verify installation
+cargo test
+```
+
+The compiled binary will be available at:
+- Release build: `target/release/sentinel-purge`
+- Development build: `target/debug/sentinel-purge`
+
+### Quick Installation Test
+```bash
+# Verify the binary works
+./target/release/sentinel-purge --version
+./target/release/sentinel-purge --help
+```
+
+## 🚀 Usage
+
+### Basic Usage
+```bash
+# Show help and available options
+./target/release/sentinel-purge --help
+
+# Run in interactive mode with default settings
+./target/release/sentinel-purge
+
+# Run in daemon mode
+./target/release/sentinel-purge --daemon
+
+# Run with specific stealth mode
+./target/release/sentinel-purge --stealth adaptive
+
+# Run with custom configuration file
+./target/release/sentinel-purge --config /path/to/config.json
+
+# Run with debug logging
+./target/release/sentinel-purge --log-level debug
+```
+
+**Note**: Replace `target/release/sentinel-purge` with `target/debug/sentinel-purge` if using a development build.
+
+### Command Line Options
+- `-c, --config <FILE>`: Specify configuration file path
+- `-s, --stealth <MODE>`: Set stealth operation mode (silent, hibernation, mimicry, ghost, adaptive)
+- `-l, --log-level <LEVEL>`: Set log level (trace, debug, info, warn, error)
+- `-d, --daemon`: Run as daemon/service
+- `-h, --help`: Show help information
+- `-V, --version`: Show version information
+
+### Stealth Modes
+- **Silent**: Minimal system footprint (default)
+- **Hibernation**: Periodically sleeps to avoid detection
+- **Mimicry**: Disguises as common system processes
+- **Ghost**: Advanced evasion techniques
+- **Adaptive**: Dynamically adjusts based on environment
+
+⚠️ **Security Note**: This tool requires elevated privileges for deep system analysis. Ensure you understand the security implications before use.
+
 ## 🚀 Contributing & Issue Management
 
 ### Issue Templates
