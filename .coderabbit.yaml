@@ -2,7 +2,7 @@
 # Advanced APT (Advanced Persistent Threat) Removal Tool
 
 # Language settings
-language: rust
+language: en-US
 
 # Review settings
 reviews:
